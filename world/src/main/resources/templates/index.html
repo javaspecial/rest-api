@@ -1,0 +1,21 @@
+
+<html>
+    <head>
+        <title>Connect with Net WOrld</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+    <center>
+        <form action="#" th:action="@{/adduser}" th:object="${users}" method="post">
+            <label for="userName">Name</label>
+            <input type="text" th:field="*{userName}" id="name" placeholder="Name">
+            <span th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></span>
+            <label for="userEmail">Email</label>
+            <input type="text" th:field="*{userEmail}" id="email" placeholder="Email">
+            <span th:if="${#fields.hasErrors('userEmail')}" th:errors="*{userEmail}"></span>
+            <input type="submit" value="Add User">   
+        </form>
+    </center>
+</body>
+</html>
