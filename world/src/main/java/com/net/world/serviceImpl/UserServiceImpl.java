@@ -25,23 +25,23 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     @Autowired(required = false)
-    private UserRepo userDao;
+    private UserRepo userRepo;
 
     @Override
     public List<User> getUserList() {
-        return userDao.findAll();
+        return userRepo.findAll();
     }
 
     @Override
     public User save(User user) {
-        return userDao.save(user);
+        return userRepo.save(user);
     }
 
     @Override
     public ResponseEntity delete(Integer userId) {
         try {
-            User user = userDao.getOne(userId);
-            userDao.delete(user);
+            User user = userRepo.getOne(userId);
+            userRepo.delete(user);
             return ResponseEntity.ok("Deleted successfully.");
         } catch (Exception e) {
             return ResponseEntity.ok("Exception occured!" + e.getMessage());
@@ -50,14 +50,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(Integer userId, User oldUser) {
-        User loadedUser = userDao.getOne(userId);
+        User loadedUser = userRepo.getOne(userId);
 
         loadedUser.setUserActivity(oldUser.getUserActivity());
         loadedUser.setUserEmail(oldUser.getUserEmail());
         loadedUser.setUserName(oldUser.getUserName());
         loadedUser.setUserNote(oldUser.getUserNote());
         loadedUser.setUserPassword(oldUser.getUserPassword());
-        return userDao.save(loadedUser);
+        return userRepo.save(loadedUser);
     }
 
 }

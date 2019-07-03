@@ -13,5 +13,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author NETIZEN
  */
 public interface UserRepo extends JpaRepository<User, Integer> {
-
+      User  findByName(String name);
 }
