@@ -11,6 +11,9 @@ import com.net.world.service.UserService;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -58,6 +61,16 @@ public class UserServiceImpl implements UserService {
         loadedUser.setUserNote(oldUser.getUserNote());
         loadedUser.setUserPassword(oldUser.getUserPassword());
         return userRepo.save(loadedUser);
+    }
+
+    @Override
+    public ResponseEntity deleteOneByUserEmail(String userEmail) {
+        userRepo.deleteOneByUserEmail(userEmail);
+        return ResponseEntity.ok("Deleted successfull by user email.");
+    }
+
+    public Page<User> findUserByPageSize(Integer pageSize) {
+        return userRepo.findAll(PageRequest.of(1, pageSize, Sort.by(Sort.Order.asc(User.USER_NAME))));
     }
 
 }

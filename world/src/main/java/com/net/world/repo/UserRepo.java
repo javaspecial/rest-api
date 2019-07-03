@@ -6,6 +6,7 @@
 package com.net.world.repo;
 
 import com.net.world.model.User;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -13,5 +14,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author NETIZEN
  */
 public interface UserRepo extends JpaRepository<User, Integer> {
-      User  findByName(String name);
+
+    Integer deleteOneByUserEmail(String userEmail);
 }

@@ -19,6 +19,8 @@ public interface UserService {
 
     public ResponseEntity delete(Integer userId);
 
+    public ResponseEntity deleteOneByUserEmail(String userEmail);
+
     public User save(User user);
 
     public User update(Integer userId, User user);
