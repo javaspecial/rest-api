@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.net.world.daoImpl;
+package com.net.world.repo;
 
 import com.net.world.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

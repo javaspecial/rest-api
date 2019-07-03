@@ -5,7 +5,7 @@
  */
 package com.net.world.serviceImpl;
 
-import com.net.world.daoImpl.UserRepo;
+import com.net.world.repo.UserRepo;
 import com.net.world.model.User;
 import com.net.world.service.UserService;
 import java.util.List;
