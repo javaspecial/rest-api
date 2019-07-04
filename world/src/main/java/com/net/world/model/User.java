@@ -5,6 +5,7 @@
  */
 package com.net.world.model;
 
+import com.google.gson.Gson;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -101,6 +102,12 @@ public class User implements Serializable {
 
     public void setUserNote(String userNote) {
         this.userNote = userNote;
+    }
+
+    @Override
+    public String toString() {
+//        return ReflectionToStringBuilder.toString(this);
+        return new Gson().toJson(this);
     }
 
 }
