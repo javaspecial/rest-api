@@ -37,7 +37,7 @@ public class UserController {
     private UserService userService;
     final private Logger logger = LogManager.getLogger(UserController.class);
 
-    @GetMapping("/listOfUser")
+    @GetMapping("/list_of_user")
     public ResponseEntity<?> listOfUser() {
         try {
             List<User> userList = userService.getUserList();
@@ -50,7 +50,33 @@ public class UserController {
         }
     }
 
-    @PostMapping(value = "/add")
+    @GetMapping("/find_by_user_email/{userEmail}")
+    public ResponseEntity<?> findByUserEmail(@PathVariable(value = "userEmail") String userEmail) {
+        try {
+            List<User> userList = userService.findByUserEmail(userEmail);
+            logger.info(userList.toString());
+            return new ResponseEntity(userList, HttpStatus.OK);
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            logger.error(message);
+            return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/find_by_user_id/{userId}")
+    public ResponseEntity<?> findByUserId(@PathVariable(value = "userId") Integer userId) {
+        try {
+            List<User> userList = userService.findByUserId(userId);
+            logger.info(userList.toString());
+            return new ResponseEntity(userList, HttpStatus.OK);
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            logger.error(message);
+            return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(value = "/add_user")
     public ResponseEntity<?> addUser(@RequestBody User user) {
         try {
             userService.save(user);
@@ -63,7 +89,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/updateUser/{userId}")
+    @PutMapping("/update_user/{userId}")
     public ResponseEntity<?> updateUser(@PathVariable(value = "userId") Integer userId, @Valid @RequestBody User user) {
         try {
             logger.info(user.toString());
@@ -77,8 +103,8 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/deleteUser/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable(value = "userId") Integer userId) {
+    @DeleteMapping("/delete_user_by_user_id/{userId}")
+    public ResponseEntity<String> deleteUserByUserId(@PathVariable(value = "userId") Integer userId) {
         try {
             ResponseEntity responseMSG = userService.delete(userId);
             logger.info(responseMSG);
@@ -90,8 +116,8 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/deleteOneByUserId/{userEmail}")
-    public ResponseEntity<String> deleteOneByUserId(@PathVariable(value = "userEmail") String userEmail) {
+    @DeleteMapping("/delete_user_by_user_email/{userEmail}")
+    public ResponseEntity<String> deleteUserByUserEmail(@PathVariable(value = "userEmail") String userEmail) {
         try {
             ResponseEntity responseMSG = userService.deleteOneByUserEmail(userEmail);
             logger.info(responseMSG);

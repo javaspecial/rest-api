@@ -24,7 +24,9 @@ public interface UserRepo extends JpaRepository<User, Integer> {
     List<User> findTop2ByUserId(Integer userId); // Limiting query
 
     List<User> findFirst3ByUserId(Integer userId); //Limiting query
-    
-    List<User> findByUserNameContaining(String userName); //Searching criteria with like operation
-    
+
+    List<User> findByUserEmailContaining(String userName); //Searching criteria with like operation
+
+    List<User> findByUserIdLike(Integer userId); //Searching criteria with like operation
+
 }

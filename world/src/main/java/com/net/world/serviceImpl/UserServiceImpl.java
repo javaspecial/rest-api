@@ -73,4 +73,22 @@ public class UserServiceImpl implements UserService {
         return userRepo.findAll(PageRequest.of(1, pageSize, Sort.by(Sort.Order.asc(User.USER_NAME))));
     }
 
+    @Override
+    public List<User> findByUserEmail(String userEmail) throws Exception {
+        List<User> userList = userRepo.findByUserEmailContaining(userEmail);
+        if (userList == null || userList.isEmpty()) {
+            throw new Exception("User not found by usages email: " + userEmail);
+        }
+        return userList;
+    }
+
+    @Override
+    public List<User> findByUserId(Integer userId) throws Exception {
+        List<User> userList = userRepo.findByUserIdLike(userId);
+        if (userList == null || userList.isEmpty()) {
+            throw new Exception("User not found by usages id: " + userId);
+        }
+        return userList;
+    }
+
 }

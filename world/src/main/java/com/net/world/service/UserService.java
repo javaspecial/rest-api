@@ -25,4 +25,8 @@ public interface UserService {
 
     public User update(Integer userId, User user);
 
+    public List<User> findByUserEmail(String userEmail) throws Exception;
+    
+    public List<User> findByUserId(Integer userId) throws Exception;
+
 }
