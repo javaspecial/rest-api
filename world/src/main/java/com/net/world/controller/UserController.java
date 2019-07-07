@@ -5,6 +5,7 @@
  */
 package com.net.world.controller;
 
+import com.net.world.helper.RestExceptionMSG;
 import com.net.world.model.User;
 import com.net.world.service.UserService;
 import java.util.List;
@@ -23,12 +24,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.springframework.data.domain.Pageable;
 
 /**
  *
  * @author shadath
  */
-@CrossOrigin(maxAge = 3600)
+@CrossOrigin(maxAge = 360000)
 @RestController
 @RequestMapping("/networld")
 public class UserController {
@@ -83,7 +85,7 @@ public class UserController {
             logger.info(user.toString());
             return new ResponseEntity(userService.getUserList(), HttpStatus.OK);
         } catch (Exception ex) {
-            String message = ex.getMessage();
+            String message = RestExceptionMSG.msg(ex.getMessage());
             logger.error(message);
             return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
         }
@@ -122,6 +124,19 @@ public class UserController {
             ResponseEntity responseMSG = userService.deleteOneByUserEmail(userEmail);
             logger.info(responseMSG);
             return responseMSG;
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            logger.error(message);
+            return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/get_paginated_page_by_pageable")
+    public ResponseEntity<?> getPaginatedPage(Pageable pageable) {
+        try {
+            List<User> userList = userService.getPaginatedPage(pageable);
+            logger.info(userList.toString());
+            return new ResponseEntity(userList, HttpStatus.OK);
         } catch (Exception ex) {
             String message = ex.getMessage();
             logger.error(message);

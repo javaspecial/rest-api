@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -36,25 +37,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(User user) {
+    public User save(User user) throws Exception {
+        if (user == null) {
+            throw new Exception("Please send a user body to save.");
+        }
         return userRepo.save(user);
     }
 
     @Override
-    public ResponseEntity delete(Integer userId) {
-        try {
-            User user = userRepo.getOne(userId);
-            userRepo.delete(user);
-            return ResponseEntity.ok("Deleted successfully.");
-        } catch (Exception e) {
-            return ResponseEntity.ok("Exception occured!" + e.getMessage());
+    public ResponseEntity delete(Integer userId) throws Exception {
+        if (userId == null) {
+            throw new Exception("Please send a user id which user you want to delete.");
         }
+        User user = userRepo.getOne(userId);
+        if (user == null) {
+            throw new Exception("User is not found by the provided id. User couldnot delete.");
+        }
+        userRepo.delete(user);
+        return ResponseEntity.ok("Deleted successfully.");
     }
 
     @Override
-    public User update(Integer userId, User oldUser) {
-        User loadedUser = userRepo.getOne(userId);
+    public User update(Integer userId, User oldUser) throws Exception {
+        if (userId == null) {
+            throw new Exception("Please send a user id which user you want to update");
+        }
+        if (oldUser == null) {
+            throw new Exception("Please send a user body to update it.");
+        }
 
+        User loadedUser = userRepo.getOne(userId);
+        if (loadedUser == null) {
+            throw new Exception("User is not found by the provided id. User couldnot updated.");
+        }
         loadedUser.setUserActivity(oldUser.getUserActivity());
         loadedUser.setUserEmail(oldUser.getUserEmail());
         loadedUser.setUserName(oldUser.getUserName());
@@ -69,8 +84,24 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok("Deleted successfull by user email.");
     }
 
-    public Page<User> findUserByPageSize(Integer pageSize) {
-        return userRepo.findAll(PageRequest.of(1, pageSize, Sort.by(Sort.Order.asc(User.USER_NAME))));
+    @Override
+    public List<User> getPaginatedPage(Pageable pageable) throws Exception {
+        if (!(pageable instanceof Pageable)) {
+            throw new Exception("Pageable is not found. Please send pageable for pagination support");
+        }
+        pageable = PageRequest.of(0, 3, Sort.by(User.USER_NAME));
+
+        Page<User> page = userRepo.findAll(pageable);
+        int number = page.getNumber();
+        int elements = page.getNumberOfElements();
+        int size = page.getSize();
+        long totalElements = page.getTotalElements();
+        int totalPages = page.getTotalPages();
+        boolean hasNext = page.hasNext();
+        boolean hasPrevious = page.hasPrevious();
+
+        List<User> listOfUsers = page.getContent();
+        return listOfUsers;
     }
 
     @Override

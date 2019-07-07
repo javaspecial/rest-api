@@ -15,18 +15,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface UserRepo extends JpaRepository<User, Integer> {
 
-    Integer deleteOneByUserEmail(String userEmail); //Custom method auto populated by JpaRepository
+    public Integer deleteOneByUserEmail(String userEmail); //Custom method auto populated by JpaRepository
 
-    List<User> findDistinctUserByUserNameOrUserEmail(String userName, String userEmail); //Query creation by method naming
+    public List<User> findDistinctUserByUserNameOrUserEmail(String userName, String userEmail); //Query creation by method naming
 
-    List<User> findByUserNameOrderByUserNameAsc(String userName); //Query creation by method naming
+    public List<User> findByUserNameOrderByUserNameAsc(String userName); //Query creation by method naming
 
-    List<User> findTop2ByUserId(Integer userId); // Limiting query
+    public List<User> findTop2ByUserId(Integer userId); // Limiting query
 
-    List<User> findFirst3ByUserId(Integer userId); //Limiting query
+    public List<User> findFirst3ByUserId(Integer userId); //Limiting query
 
-    List<User> findByUserEmailContaining(String userName); //Searching criteria with like operation
+    public List<User> findByUserEmailContaining(String userName); //Searching criteria with like operation
 
-    List<User> findByUserIdLike(Integer userId); //Searching criteria with like operation
-
+    public List<User> findByUserIdLike(Integer userId); //Searching criteria with like operation
 }
