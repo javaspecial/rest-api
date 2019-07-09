@@ -52,6 +52,19 @@ public class UserController {
         }
     }
 
+    @GetMapping("/list_of_active_user")
+    public ResponseEntity<?> listOfActiveUser() {
+        try {
+            List<User> userList = userService.getActiveUserList();
+            logger.info(userList.toString());
+            return new ResponseEntity(userList, HttpStatus.OK);
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            logger.error(message);
+            return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/find_by_user_email/{userEmail}")
     public ResponseEntity<?> findByUserEmail(@PathVariable(value = "userEmail") String userEmail) {
         try {

@@ -18,6 +18,8 @@ public interface UserService {
 
     public List<User> getUserList() throws Exception;
 
+    public List<User> getActiveUserList() throws Exception;
+
     public ResponseEntity delete(Integer userId) throws Exception;
 
     public ResponseEntity deleteOneByUserEmail(String userEmail) throws Exception;

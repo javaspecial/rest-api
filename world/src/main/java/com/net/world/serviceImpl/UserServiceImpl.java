@@ -9,6 +9,7 @@ import com.net.world.repo.UserRepo;
 import com.net.world.model.User;
 import com.net.world.service.UserService;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,7 +50,7 @@ public class UserServiceImpl implements UserService {
         if (userId == null) {
             throw new Exception("Please send a user id which user you want to delete.");
         }
-        
+
         List<User> userList = userRepo.findByUserIdLike(userId);
         if (userList == null || userList.isEmpty()) {
             throw new Exception("User is not found by the provided id. User couldnot delete.");
@@ -122,6 +123,15 @@ public class UserServiceImpl implements UserService {
             throw new Exception("User not found by usages id: " + userId);
         }
         return userList;
+    }
+
+    @Override
+    public List<User> getActiveUserList() throws Exception {
+        List<User> userList = userRepo.findAll();
+        if (userList == null || userList.isEmpty()) {
+            throw new Exception("Active user not found!!");
+        }
+        return userList.stream().filter(u -> u.getUserActivity()).collect(Collectors.toList());
     }
 
 }
