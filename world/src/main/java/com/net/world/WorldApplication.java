@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({"com.net.world.controller", "com.net.world.serviceImpl", "com.neti.world.aspect"})
+@ComponentScan({"com.net.world.controller", "com.net.world.serviceImpl", "com.neti.world.aspect", "com.net.world.security"})
 @EntityScan("com.net.world.model")
 public class WorldApplication {
 
