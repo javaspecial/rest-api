@@ -10,7 +10,10 @@ import com.net.world.model.User;
 import com.net.world.service.UserService;
 import java.util.List;
 import javax.validation.Valid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,9 +25,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-import org.springframework.data.domain.Pageable;
 
 /**
  *
@@ -92,10 +92,23 @@ public class UserController {
     }
 
     @PostMapping(value = "/add_user")
-    public ResponseEntity<?> addUser(@RequestBody User user) {
+    public ResponseEntity<?> saveUser(@RequestBody User user) {
         try {
             userService.save(user);
             logger.info(user.toString());
+            return new ResponseEntity(userService.getUserList(), HttpStatus.OK);
+        } catch (Exception ex) {
+            String message = RestExceptionMSG.msg(ex.getMessage());
+            logger.error(message);
+            return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(value = "/add_all_user")
+    public ResponseEntity<?> saveAllUser(@RequestBody List<User> users) {
+        try {
+            userService.saveAll(users);
+            logger.info(users.toString());
             return new ResponseEntity(userService.getUserList(), HttpStatus.OK);
         } catch (Exception ex) {
             String message = RestExceptionMSG.msg(ex.getMessage());
@@ -122,6 +135,19 @@ public class UserController {
     public ResponseEntity<String> deleteUserByUserId(@PathVariable(value = "userId") Integer userId) {
         try {
             ResponseEntity responseMSG = userService.delete(userId);
+            logger.info(responseMSG);
+            return responseMSG;
+        } catch (Exception ex) {
+            String message = ex.getMessage();
+            logger.error(message);
+            return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/delete_all_user")
+    public ResponseEntity<String> deleteAllUser() {
+        try {
+            ResponseEntity responseMSG = userService.deleteAll();
             logger.info(responseMSG);
             return responseMSG;
         } catch (Exception ex) {

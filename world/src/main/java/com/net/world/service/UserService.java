@@ -22,9 +22,13 @@ public interface UserService {
 
     public ResponseEntity delete(Integer userId) throws Exception;
 
+    public ResponseEntity deleteAll() throws Exception;
+
     public ResponseEntity deleteOneByUserEmail(String userEmail) throws Exception;
 
     public User save(User user) throws Exception;
+
+    public List<User> saveAll(List<User> users) throws Exception;
 
     public User update(Integer userId, User user) throws Exception;
 

@@ -5,13 +5,14 @@
  */
 package com.net.world.serviceImpl;
 
-import com.net.world.repo.UserRepo;
 import com.net.world.model.User;
+import com.net.world.repo.UserRepo;
 import com.net.world.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,7 @@ public class UserServiceImpl implements UserService {
     private UserRepo userRepo;
 
     @Override
+    @CacheEvict(value = "networld", allEntries = true)
     public List<User> getUserList() {
         return userRepo.findAll();
     }
@@ -43,6 +45,14 @@ public class UserServiceImpl implements UserService {
             throw new Exception("Please send a user body to save.");
         }
         return userRepo.save(user);
+    }
+
+    @Override
+    public List<User> saveAll(List<User> users) throws Exception {
+        if (users == null || users.isEmpty()) {
+            throw new Exception("Please send at least one user body to perform save.");
+        }
+        return userRepo.saveAll(users);
     }
 
     @Override
@@ -58,6 +68,12 @@ public class UserServiceImpl implements UserService {
         User user = userRepo.getOne(userId);
         userRepo.delete(user);
         return ResponseEntity.ok("Deleted successfully.");
+    }
+
+    @Override
+    public ResponseEntity deleteAll() throws Exception {
+        userRepo.deleteAll();
+        return ResponseEntity.ok("All users are deleted.");
     }
 
     @Override
